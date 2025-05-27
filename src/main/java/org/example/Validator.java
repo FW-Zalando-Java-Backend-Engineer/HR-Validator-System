@@ -20,6 +20,22 @@ public class Validator {
                     throw new IllegalAccessException("Field '"+field.getName()+"' cannot be null.");
                 }
             }
+
+            // 2. @Length annotation
+
+            // Is this field annotated with @Length? -> Yes,
+            // Is that field's value actually a String? -> Yes
+            if(field.isAnnotationPresent(Length.class) && value instanceof String ){
+              Length len = field.getAnnotation(Length.class); // Get the actual Length annotation on this 'field'
+
+              String str = (String) value;
+              if(str.length() < len.min() || str.length() > len.max()){
+                  throw new IllegalAccessException(
+                          "Field '"+field.getName()+"' must have length between "+ len.min()+" and " + len.max()
+                  );
+              }
+
+            }
         }
     }
 }
