@@ -36,6 +36,17 @@ public class Validator {
               }
 
             }
+
+            // 3. @Min annotation
+            if(field.isAnnotationPresent(Min.class) && value instanceof Integer){
+                Min min = field.getAnnotation(Min.class);
+                int minimumValue =  min.value();
+                if((Integer) value < minimumValue ){
+                    throw new IllegalAccessException(
+                            "Field '"+field.getName()+"' must be >= "+ minimumValue
+                    );
+                }
+            }
         }
     }
 }
